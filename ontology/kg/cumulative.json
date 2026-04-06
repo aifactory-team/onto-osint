@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "description": "누적 지식그래프 — 모든 트리플을 포함하는 전체 그래프",
+  "last_updated": null,
+  "nodes": [],
+  "edges": [],
+  "triples": [],
+  "stats": {
+    "total_nodes": 0,
+    "total_edges": 0,
+    "total_triples": 0
+  }
+}

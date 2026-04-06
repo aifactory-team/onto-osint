@@ -1,0 +1,132 @@
+name: Daily OSINT Report
+
+on:
+  schedule:
+    # config/osint-config.json의 project.schedule_cron과 일치시킬 것
+    # 기본값: 한국시간 오전 8시 (UTC 23:00 전날)
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: 'Target date (YYYY-MM-DD). Defaults to today if empty.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Cheliped Browser
+        run: |
+          git clone https://github.com/tykimos/cheliped-browser.git /tmp/cheliped-browser
+          cd /tmp/cheliped-browser/scripts
+          npm install
+          npm run build 2>/dev/null || true
+          echo "CHELIPED_CLI=/tmp/cheliped-browser/scripts/cheliped-cli.mjs" >> $GITHUB_ENV
+
+      - name: Verify Cheliped and Chrome
+        run: |
+          which google-chrome || which chromium-browser || echo "No Chrome found"
+          node $CHELIPED_CLI '[{"cmd":"goto","args":["https://www.google.com"]},{"cmd":"close"}]' && echo "Cheliped: OK" || echo "Cheliped: FAILED"
+
+      - name: Determine target date
+        id: date
+        run: |
+          if [ -n "${{ github.event.inputs.target_date }}" ]; then
+            echo "target=${{ github.event.inputs.target_date }}" >> $GITHUB_OUTPUT
+          else
+            echo "target=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          fi
+          echo "year=$(date -u +%Y -d "${{ github.event.inputs.target_date || '$(date -u +%Y-%m-%d)' }}" 2>/dev/null || date -u +%Y)" >> $GITHUB_OUTPUT
+          echo "month=$(date -u +%m -d "${{ github.event.inputs.target_date || '$(date -u +%Y-%m-%d)' }}" 2>/dev/null || date -u +%m)" >> $GITHUB_OUTPUT
+
+      - name: Generate report with Claude Code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: "--model claude-opus-4-6 --allowedTools 'Bash(*)' 'Read(*)' 'Write(*)' 'Edit(*)' 'Glob(*)' 'Grep(*)' 'WebSearch(*)' 'WebFetch(*)'"
+          use_bedrock: false
+          use_vertex: false
+          prompt: |
+            You are the Onto-OSINT daily report agent.
+            **Target date:** ${{ steps.date.outputs.target }}
+            **Cheliped CLI:** Available at $CHELIPED_CLI
+
+            Read CLAUDE.md for project rules.
+            Read config/osint-config.json for all domain-specific configuration.
+
+            Execute the 6-phase pipeline. For each phase, read the agent file for your role and the referenced skill file for detailed rules.
+
+            ## Phase 0: Prepare
+            ```bash
+            mkdir -p sources/${{ steps.date.outputs.target }}/items
+            mkdir -p reports/${{ steps.date.outputs.year }}/${{ steps.date.outputs.month }}
+            mkdir -p ontology/kg
+            ```
+            Read `config/osint-config.json` for project settings.
+            Find previous N days (from config `project.lookback_days`) of `sources/*/index.json` and `reports/**/*.md` using Glob.
+            If `ontology/schema.json` has empty `classes` array, initialize it from config's `ontology.seed_classes` and `ontology.seed_relations`.
+
+            ## Phase 1: Collect
+            Read `.claude/agents/osint-collector.md` for your role.
+            Read `.claude/skills/onto-osint-report/references/search-strategy.md` for search strategy, methods, and output schema.
+            Also read `ontology/instances.json` for entity-based keyword expansion.
+            Save results to `sources/${{ steps.date.outputs.target }}/search-results.json`.
+
+            ## Phase 2: Extract
+            Read `.claude/agents/osint-extractor.md` for your role.
+            Read `.claude/skills/onto-osint-report/references/extraction-rules.md` for extraction rules, tag definitions, dedup rules, and output schemas.
+            Save `sources/${{ steps.date.outputs.target }}/index.json`, `sources/${{ steps.date.outputs.target }}/items/src-XXX.json`, and `sources/${{ steps.date.outputs.target }}/entities.json`.
+
+            ## Phase 3-4: Ontology & Knowledge Graph
+            Read `.claude/agents/osint-reasoner.md` for your role.
+            Read `.claude/skills/onto-osint-report/references/ontology-reasoning.md` for ontology expansion principles, reasoning rules, and KG schemas.
+            Update `ontology/schema.json`, `ontology/instances.json`.
+            Save `ontology/kg/${{ steps.date.outputs.target }}.json`.
+            Update `ontology/kg/cumulative.json`.
+            Append to `ontology/reasoning-log.md`.
+            Save `sources/${{ steps.date.outputs.target }}/analysis.md` and `sources/${{ steps.date.outputs.target }}/report-basis.md`.
+
+            ## Phase 5: Report
+            Read `.claude/agents/osint-reporter.md` for your role.
+            Read `.claude/skills/onto-osint-report/references/report-format.md` for report structure, KG visualization rules, and Wiki publishing rules.
+            Save `reports/${{ steps.date.outputs.year }}/${{ steps.date.outputs.month }}/${{ steps.date.outputs.target }}.md`.
+            Include Mermaid knowledge graph visualization in the report.
+
+            ## Phase 6: Commit & Publish
+            ```bash
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add sources/ reports/ ontology/
+            git commit -m "report: daily OSINT update (${{ steps.date.outputs.target }})"
+            git push
+            ```
+
+            Publish to GitHub Wiki (if config report.wiki_publish is true):
+            ```bash
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.wiki.git /tmp/wiki
+            sed '1{/^---$/!q;};1,/^---$/d' reports/${{ steps.date.outputs.year }}/${{ steps.date.outputs.month }}/${{ steps.date.outputs.target }}.md > /tmp/wiki/${{ steps.date.outputs.target }}.md
+            ```
+            Update `/tmp/wiki/Home.md` (prepend today's link), `_Sidebar.md` (last 14 days), `Monthly-${{ steps.date.outputs.year }}-${{ steps.date.outputs.month }}.md`.
+            ```bash
+            cd /tmp/wiki && git config user.name "github-actions[bot]" && git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A && git commit -m "report: ${{ steps.date.outputs.target }}" && git push
+            ```

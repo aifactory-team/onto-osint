@@ -1,0 +1,133 @@
+{
+  "project": {
+    "name": "onto-osint",
+    "topic": "YOUR_TOPIC_HERE",
+    "description": "이 OSINT 시스템이 추적하는 주제에 대한 설명",
+    "goals": [
+      "주요 동향 모니터링",
+      "핵심 행위자 관계 추적",
+      "시간 경과에 따른 변화 감지"
+    ],
+    "scope": {
+      "include": ["포함할 범위 키워드"],
+      "exclude": ["제외할 범위 키워드"]
+    },
+    "report_language": "ko",
+    "lookback_days": 7,
+    "schedule_cron": "0 23 * * *",
+    "schedule_description": "KST 08:00 매일"
+  },
+  "search": {
+    "min_searches": 8,
+    "engines": [
+      {
+        "id": "google",
+        "name": "Google",
+        "engine": "google",
+        "languages": ["en", "ko"],
+        "enabled": true
+      },
+      {
+        "id": "naver",
+        "name": "Naver",
+        "engine": "naver",
+        "languages": ["ko"],
+        "enabled": true
+      },
+      {
+        "id": "bing",
+        "name": "Bing",
+        "engine": "bing",
+        "languages": ["en"],
+        "enabled": true
+      },
+      {
+        "id": "duckduckgo",
+        "name": "DuckDuckGo",
+        "engine": "duckduckgo",
+        "languages": ["en"],
+        "enabled": true
+      }
+    ],
+    "custom_sites": [],
+    "keywords": {
+      "ko": ["주제_키워드_한국어"],
+      "en": ["topic_keyword_english"]
+    }
+  },
+  "ontology": {
+    "seed_classes": [
+      {
+        "id": "Entity",
+        "label": "엔티티",
+        "description": "최상위 클래스",
+        "subclasses": [
+          {
+            "id": "Person",
+            "label": "인물",
+            "properties": ["name", "role", "affiliation"]
+          },
+          {
+            "id": "Organization",
+            "label": "조직",
+            "properties": ["name", "type", "location"]
+          },
+          {
+            "id": "Event",
+            "label": "사건",
+            "properties": ["name", "date", "location", "participants"]
+          },
+          {
+            "id": "Location",
+            "label": "장소",
+            "properties": ["name", "type", "coordinates"]
+          },
+          {
+            "id": "Concept",
+            "label": "개념",
+            "properties": ["name", "domain"]
+          }
+        ]
+      }
+    ],
+    "seed_relations": [
+      { "id": "participatesIn", "label": "참여", "domain": "Person", "range": "Event" },
+      { "id": "affiliatedWith", "label": "소속", "domain": "Person", "range": "Organization" },
+      { "id": "locatedIn", "label": "위치", "domain": "Entity", "range": "Location" },
+      { "id": "relatedTo", "label": "관련", "domain": "Entity", "range": "Entity" },
+      { "id": "causedBy", "label": "원인", "domain": "Event", "range": "Event" },
+      { "id": "follows", "label": "후속", "domain": "Event", "range": "Event" },
+      { "id": "mentions", "label": "언급", "domain": "Entity", "range": "Concept" },
+      { "id": "opposes", "label": "대립", "domain": "Entity", "range": "Entity" },
+      { "id": "cooperatesWith", "label": "협력", "domain": "Entity", "range": "Entity" }
+    ],
+    "reasoning_rules": [
+      {
+        "id": "transitivity",
+        "description": "A가 B에 소속되고 B가 C에 소속되면 A는 C에도 간접 소속",
+        "pattern": "(?x affiliatedWith ?y) AND (?y affiliatedWith ?z) => (?x indirectlyAffiliatedWith ?z)"
+      },
+      {
+        "id": "event_chain",
+        "description": "사건 A가 사건 B를 유발하고 B가 C를 유발하면 A→C 인과 체인",
+        "pattern": "(?a causedBy ?b) AND (?b causedBy ?c) => (?a causalChain ?c)"
+      },
+      {
+        "id": "co_participation",
+        "description": "같은 사건에 참여한 엔티티는 잠재적 관계",
+        "pattern": "(?x participatesIn ?e) AND (?y participatesIn ?e) => (?x potentialRelation ?y)"
+      }
+    ],
+    "max_new_classes_per_day": 5,
+    "max_new_relations_per_day": 10,
+    "confidence_threshold": 0.7
+  },
+  "report": {
+    "format": "markdown",
+    "include_kg_visualization": true,
+    "kg_visualization_format": "mermaid",
+    "max_kg_nodes": 30,
+    "wiki_publish": true,
+    "empty_report_message": "금일 관련 특이사항 없음"
+  }
+}
