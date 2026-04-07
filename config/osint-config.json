@@ -1,16 +1,28 @@
 {
   "project": {
-    "name": "onto-osint",
-    "topic": "YOUR_TOPIC_HERE",
-    "description": "이 OSINT 시스템이 추적하는 주제에 대한 설명",
+    "name": "nknc-onto-osint",
+    "topic": "North Korea Nuclear Activity Monitoring",
+    "description": "북한의 핵무기 개발, 핵실험, 미사일 발사, 핵시설 활동, 국제 제재 및 비핵화 협상 등 핵 관련 동향을 추적하는 OSINT 시스템",
     "goals": [
-      "주요 동향 모니터링",
-      "핵심 행위자 관계 추적",
-      "시간 경과에 따른 변화 감지"
+      "북한 핵/미사일 활동 동향 모니터링",
+      "핵시설 및 관련 인프라 변화 감지",
+      "핵심 인물 및 조직 관계 추적",
+      "국제 제재 및 비핵화 협상 진행 상황 추적",
+      "위성 영상 분석 보고서 및 전문가 평가 수집"
     ],
     "scope": {
-      "include": ["포함할 범위 키워드"],
-      "exclude": ["제외할 범위 키워드"]
+      "include": [
+        "북한 핵실험", "핵무기 개발", "우라늄 농축", "플루토늄 재처리",
+        "ICBM", "SLBM", "탄도미사일", "핵탄두",
+        "영변 핵시설", "풍계리 핵실험장", "동창리 발사장", "서해위성발사장",
+        "비핵화 협상", "6자회담", "CVID", "핵동결",
+        "UN 안보리 대북제재", "IAEA 사찰",
+        "핵확산", "핵물질 이전", "핵기술 수출"
+      ],
+      "exclude": [
+        "북한 일반 내정", "탈북자 개인사", "한류 문화",
+        "남북 스포츠 교류", "일반 관광"
+      ]
     },
     "report_language": "ko",
     "lookback_days": 7,
@@ -18,7 +30,7 @@
     "schedule_description": "KST 08:00 매일"
   },
   "search": {
-    "min_searches": 8,
+    "min_searches": 10,
     "engines": [
       {
         "id": "google",
@@ -49,10 +61,36 @@
         "enabled": true
       }
     ],
-    "custom_sites": [],
+    "custom_sites": [
+      "38north.org",
+      "nknews.org",
+      "beyondparallel.csis.org",
+      "armscontrolwonk.com",
+      "iaea.org",
+      "un.org/securitycouncil",
+      "kcnawatch.org",
+      "stimson.org",
+      "sipri.org"
+    ],
     "keywords": {
-      "ko": ["주제_키워드_한국어"],
-      "en": ["topic_keyword_english"]
+      "ko": [
+        "북한 핵실험", "북한 핵무기", "북한 미사일 발사",
+        "영변 핵시설", "풍계리", "북한 ICBM",
+        "북한 우라늄 농축", "북한 플루토늄",
+        "대북제재", "북한 비핵화",
+        "북한 핵탄두", "북한 핵개발",
+        "북한 탄도미사일", "조선민주주의인민공화국 핵"
+      ],
+      "en": [
+        "North Korea nuclear test", "DPRK nuclear weapon",
+        "North Korea missile launch", "Yongbyon nuclear facility",
+        "Punggye-ri test site", "North Korea ICBM",
+        "DPRK uranium enrichment", "North Korea plutonium",
+        "UN sanctions DPRK", "North Korea denuclearization",
+        "North Korea nuclear warhead", "DPRK ballistic missile",
+        "38 North satellite imagery", "North Korea nuclear proliferation",
+        "DPRK weapons program"
+      ]
     }
   },
   "ontology": {
@@ -65,27 +103,142 @@
           {
             "id": "Person",
             "label": "인물",
-            "properties": ["name", "role", "affiliation"]
+            "properties": ["name", "role", "affiliation", "rank"],
+            "subclasses": [
+              {
+                "id": "NKOfficial",
+                "label": "북한 관료",
+                "properties": ["name", "title", "department", "sanctioned"]
+              },
+              {
+                "id": "NuclearScientist",
+                "label": "핵 과학자",
+                "properties": ["name", "specialty", "affiliation"]
+              },
+              {
+                "id": "Diplomat",
+                "label": "외교관",
+                "properties": ["name", "country", "role"]
+              },
+              {
+                "id": "Analyst",
+                "label": "분석가",
+                "properties": ["name", "institution", "specialty"]
+              }
+            ]
           },
           {
             "id": "Organization",
             "label": "조직",
-            "properties": ["name", "type", "location"]
+            "properties": ["name", "type", "location", "country"],
+            "subclasses": [
+              {
+                "id": "NKMilitaryOrg",
+                "label": "북한 군사조직",
+                "properties": ["name", "command_structure", "mission"]
+              },
+              {
+                "id": "NKNuclearEntity",
+                "label": "북한 핵기관",
+                "properties": ["name", "function", "location"]
+              },
+              {
+                "id": "InternationalOrg",
+                "label": "국제기구",
+                "properties": ["name", "mandate", "headquarters"]
+              },
+              {
+                "id": "ResearchInstitute",
+                "label": "연구기관",
+                "properties": ["name", "focus_area", "country"]
+              }
+            ]
           },
           {
             "id": "Event",
             "label": "사건",
-            "properties": ["name", "date", "location", "participants"]
+            "properties": ["name", "date", "location", "participants"],
+            "subclasses": [
+              {
+                "id": "NuclearTest",
+                "label": "핵실험",
+                "properties": ["name", "date", "yield_kt", "location", "seismic_magnitude"]
+              },
+              {
+                "id": "MissileLaunch",
+                "label": "미사일 발사",
+                "properties": ["name", "date", "missile_type", "launch_site", "range_km", "apogee_km", "success"]
+              },
+              {
+                "id": "DiplomaticEvent",
+                "label": "외교 행사",
+                "properties": ["name", "date", "location", "participants", "outcome"]
+              },
+              {
+                "id": "SanctionAction",
+                "label": "제재 조치",
+                "properties": ["name", "date", "issuing_body", "target", "type"]
+              },
+              {
+                "id": "FacilityActivity",
+                "label": "시설 활동",
+                "properties": ["name", "date", "facility", "activity_type", "source"]
+              }
+            ]
           },
           {
             "id": "Location",
             "label": "장소",
-            "properties": ["name", "type", "coordinates"]
+            "properties": ["name", "type", "coordinates", "country"],
+            "subclasses": [
+              {
+                "id": "NuclearFacility",
+                "label": "핵시설",
+                "properties": ["name", "facility_type", "coordinates", "status", "capacity"]
+              },
+              {
+                "id": "LaunchSite",
+                "label": "발사장",
+                "properties": ["name", "coordinates", "missile_types", "status"]
+              },
+              {
+                "id": "TestSite",
+                "label": "실험장",
+                "properties": ["name", "coordinates", "test_count", "status"]
+              }
+            ]
           },
           {
             "id": "Concept",
             "label": "개념",
-            "properties": ["name", "domain"]
+            "properties": ["name", "domain"],
+            "subclasses": [
+              {
+                "id": "WeaponSystem",
+                "label": "무기체계",
+                "properties": ["name", "type", "range", "payload", "fuel_type"]
+              },
+              {
+                "id": "NuclearMaterial",
+                "label": "핵물질",
+                "properties": ["name", "type", "grade", "usage"]
+              },
+              {
+                "id": "Treaty",
+                "label": "조약/협정",
+                "properties": ["name", "parties", "status", "date"]
+              },
+              {
+                "id": "SanctionRegime",
+                "label": "제재 레짐",
+                "properties": ["name", "resolution_number", "scope", "date"]
+              },
+              {
+                "id": "Technology",
+                "label": "기술",
+                "properties": ["name", "category", "proliferation_risk"]
+              }
+            ]
           }
         ]
       }
@@ -99,7 +252,18 @@
       { "id": "follows", "label": "후속", "domain": "Event", "range": "Event" },
       { "id": "mentions", "label": "언급", "domain": "Entity", "range": "Concept" },
       { "id": "opposes", "label": "대립", "domain": "Entity", "range": "Entity" },
-      { "id": "cooperatesWith", "label": "협력", "domain": "Entity", "range": "Entity" }
+      { "id": "cooperatesWith", "label": "협력", "domain": "Entity", "range": "Entity" },
+      { "id": "commands", "label": "지휘", "domain": "Person", "range": "Organization" },
+      { "id": "developsAt", "label": "개발장소", "domain": "WeaponSystem", "range": "NuclearFacility" },
+      { "id": "testedAt", "label": "실험장소", "domain": "NuclearTest", "range": "TestSite" },
+      { "id": "launchedFrom", "label": "발사장소", "domain": "MissileLaunch", "range": "LaunchSite" },
+      { "id": "sanctionedBy", "label": "제재주체", "domain": "Entity", "range": "SanctionAction" },
+      { "id": "targets", "label": "제재대상", "domain": "SanctionAction", "range": "Entity" },
+      { "id": "violates", "label": "위반", "domain": "Event", "range": "Treaty" },
+      { "id": "usesWeaponSystem", "label": "사용무기", "domain": "MissileLaunch", "range": "WeaponSystem" },
+      { "id": "producesMaterial", "label": "생산물질", "domain": "NuclearFacility", "range": "NuclearMaterial" },
+      { "id": "suppliesTo", "label": "공급", "domain": "Entity", "range": "Entity" },
+      { "id": "monitorsBy", "label": "감시주체", "domain": "NuclearFacility", "range": "InternationalOrg" }
     ],
     "reasoning_rules": [
       {
@@ -109,13 +273,28 @@
       },
       {
         "id": "event_chain",
-        "description": "사건 A가 사건 B를 유발하고 B가 C를 유발하면 A→C 인과 체인",
+        "description": "사건 A가 사건 B를 유발하고 B가 C를 유발하면 A-C 인과 체인",
         "pattern": "(?a causedBy ?b) AND (?b causedBy ?c) => (?a causalChain ?c)"
       },
       {
         "id": "co_participation",
         "description": "같은 사건에 참여한 엔티티는 잠재적 관계",
         "pattern": "(?x participatesIn ?e) AND (?y participatesIn ?e) => (?x potentialRelation ?y)"
+      },
+      {
+        "id": "sanction_escalation",
+        "description": "핵실험/미사일 발사 후 제재 조치가 뒤따르면 escalation 패턴",
+        "pattern": "(?test type NuclearTest|MissileLaunch) AND (?sanction type SanctionAction) AND (?sanction follows ?test) => (?test triggeredEscalation ?sanction)"
+      },
+      {
+        "id": "facility_weapon_link",
+        "description": "시설에서 개발된 무기가 발사에 사용되면 시설-발사 연결",
+        "pattern": "(?ws developsAt ?fac) AND (?launch usesWeaponSystem ?ws) => (?fac linkedToLaunch ?launch)"
+      },
+      {
+        "id": "proliferation_network",
+        "description": "엔티티 A가 B에 공급하고 B가 C에 공급하면 확산 네트워크",
+        "pattern": "(?a suppliesTo ?b) AND (?b suppliesTo ?c) => (?a proliferationNetwork ?c)"
       }
     ],
     "max_new_classes_per_day": 5,
@@ -128,6 +307,6 @@
     "kg_visualization_format": "mermaid",
     "max_kg_nodes": 30,
     "wiki_publish": true,
-    "empty_report_message": "금일 관련 특이사항 없음"
+    "empty_report_message": "금일 북한 핵활동 관련 특이사항 없음"
   }
 }
