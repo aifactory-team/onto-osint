@@ -1,7 +1,7 @@
-# Onto-OSINT — Ontology-Based OSINT Report System
+# Onto-OSINT4NKNC — 북한 핵활동 모니터링 OSINT 시스템
 
-설정 파일 하나만 수정하면 어떤 주제든 자동 OSINT 모니터링이 가능한 범용 시스템.
-GitHub Actions 또는 로컬 Claude Code CLI로 실행되며, 온톨로지를 진화시키고 지식그래프를 구축하여 보고서를 생성한다.
+온톨로지 기반 OSINT 시스템으로 북한의 핵무기 개발, 미사일 발사, 핵시설 활동, 국제 제재 동향을 자동 추적한다.
+GitHub Actions 또는 로컬 Claude Code CLI로 실행되며, 온톨로지를 진화시키고 지식그래프를 구축하여 일일 보고서를 생성한다.
 
 ---
 
@@ -13,9 +13,9 @@ OSINT(Open Source Intelligence)는 공개된 정보 — 뉴스, 논문, SNS, 정
 
 | 문제 | 설명 | 예시 |
 |------|------|------|
-| **정보의 홍수** | 매일 수백 건의 기사 중 새 정보와 중복을 구분하기 어렵다 | "이 기사는 어제 본 것과 같은 내용인가, 새로운 정보가 추가된 것인가?" |
-| **점과 점의 연결** | 개별 기사는 단편적이지만, 연결하면 큰 그림이 보인다 | "A 기업이 B 기술에 투자했고, C 연구소가 같은 기술을 발표했다 — 이 둘은 관련이 있을까?" |
-| **시간에 따른 변화** | 며칠에 걸친 사건의 흐름을 놓치기 쉽다 | "지난주 발표된 정책이 이번 주 시장에 어떤 영향을 미쳤는지" |
+| **정보의 홍수** | 매일 수백 건의 기사 중 새 정보와 중복을 구분하기 어렵다 | "이 미사일 발사 보도는 어제 본 것과 같은 내용인가, 새로운 정보가 추가된 것인가?" |
+| **점과 점의 연결** | 개별 기사는 단편적이지만, 연결하면 큰 그림이 보인다 | "영변에서 농축시설을 확장하고, ICBM 엔진을 시험하고, 핵보유국 인정을 요구한다 — 이것이 하나의 전략인가?" |
+| **시간에 따른 변화** | 며칠에 걸친 사건의 흐름을 놓치기 쉽다 | "1월 미사일 발사 → 3월 대규모 발사 → 3월 엔진 시험으로 이어지는 에스컬레이션 패턴" |
 
 이 시스템은 이 세 가지 문제를 자동화한다.
 
@@ -25,11 +25,11 @@ OSINT(Open Source Intelligence)는 공개된 정보 — 뉴스, 논문, SNS, 정
 
 ### 키워드 검색의 한계
 
-일반적인 뉴스 모니터링 도구는 키워드로 검색해서 결과를 나열한다. 예를 들어 "기후기술 스타트업"을 검색하면 관련 기사 100건이 나온다. 하지만 이것만으로는 다음 질문에 답할 수 없다:
+일반적인 뉴스 모니터링 도구는 키워드로 검색해서 결과를 나열한다. 예를 들어 "북한 핵실험"을 검색하면 관련 기사 100건이 나온다. 하지만 이것만으로는 다음 질문에 답할 수 없다:
 
-- 어떤 투자자가 어떤 스타트업에 투자하고 있는가?
-- 특정 기술을 개발하는 스타트업들 사이에 인적 네트워크가 있는가?
-- 정부 정책 변화가 어떤 스타트업에 영향을 미치는가?
+- 어떤 시설에서 어떤 무기가 개발되고 있는가?
+- 미사일 발사와 핵시설 활동 사이에 시간적 연관이 있는가?
+- 제재 강화가 북한의 핵 프로그램에 실질적 영향을 미치고 있는가?
 
 ### 온톨로지가 해결하는 것
 
@@ -39,26 +39,39 @@ OSINT(Open Source Intelligence)는 공개된 정보 — 뉴스, 논문, SNS, 정
 
 이 시스템에서 온톨로지는 두 가지를 정의한다:
 
-**엔티티 유형** — 세상에 존재하는 것들의 분류:
+**엔티티 유형** — 북한 핵 도메인의 분류 체계:
 
 ```
 Entity (엔티티)
-├── Person (인물)      — 이름, 역할, 소속
-├── Organization (조직) — 이름, 유형, 소재지
-├── Event (사건)       — 이름, 날짜, 장소
-├── Location (장소)    — 이름, 유형
-└── Concept (개념)     — 이름, 도메인
+├── Person (인물)      — 김정은, 외교관, 핵 과학자, 분석가
+│   ├── NKOfficial     — 북한 관료
+│   └── Diplomat       — 외교관
+├── Organization (조직) — 군사조직, 핵기관, 국제기구
+│   ├── NKMilitaryOrg  — 북한 군사조직
+│   └── InternationalOrg — IAEA, 유엔 안보리
+├── Event (사건)       — 핵실험, 미사일 발사, 외교 행사, 제재 조치
+│   ├── NuclearTest    — 핵실험
+│   ├── MissileLaunch  — 미사일 발사
+│   └── SanctionAction — 제재 조치
+├── Location (장소)    — 핵시설, 발사장, 실험장
+│   ├── NuclearFacility — 영변 핵시설
+│   └── LaunchSite     — 서해위성발사장
+└── Concept (개념)     — 무기체계, 핵물질, 조약, 기술
+    ├── WeaponSystem   — 화성-20, KN-25
+    └── Technology     — MIRV, 탄소섬유 ICBM
 ```
 
 **관계 유형** — 엔티티 사이의 연결:
 
 ```
-소속(affiliatedWith):   인물 → 조직
-참여(participatesIn):   인물 → 사건
-협력(cooperatesWith):   조직 → 조직
-대립(opposes):          조직 → 조직
-원인(causedBy):         사건 → 사건
-후속(follows):          사건 → 사건
+소속(affiliatedWith):     인물 → 조직       (김정은 → 조선노동당)
+지휘(commands):           인물 → 조직       (김정은 → 원자력공업성)
+참여(participatesIn):     인물 → 사건       (김정은 → ICBM 엔진 시험)
+개발장소(developsAt):     무기 → 시설       (화성-20 → 영변)
+사용무기(usesWeaponSystem): 발사 → 무기     (3/14 발사 → KN-25)
+위반(violates):           사건 → 조약       (미사일 발사 → UNSCR)
+제재대상(targets):        제재 → 엔티티     (IT 사기 제재 → 원자력공업성)
+후속(follows):            사건 → 사건       (1/4 발사 → 1/27 발사)
 ```
 
 ### 키워드 검색 vs 온톨로지 OSINT
@@ -66,17 +79,17 @@ Entity (엔티티)
 같은 기사를 두 방식으로 처리하면 이런 차이가 난다:
 
 ```
-기사: "GreenTech Ventures가 태양광 스타트업 SolarNext에 5억 원 투자"
+기사: "북한, 3월 28일 김정은 참관 하에 ICBM 신형 고체연료 엔진 지상시험 실시"
 
 키워드 검색 결과:
-  → "기후기술 스타트업" 검색 결과 중 하나로 나열됨. 끝.
+  → "북한 ICBM" 검색 결과 중 하나로 나열됨. 끝.
 
 온톨로지 OSINT 결과:
-  → 엔티티 추출: GreenTech Ventures(투자사), SolarNext(스타트업)
-  → 관계 추출: GreenTech Ventures --투자--> SolarNext
-  → 기존 지식과 연결: SolarNext의 CTO가 이전에 EcoPanel 출신이라는 
-     지난주 기사와 연결
-  → 추론: GreenTech Ventures와 EcoPanel 사이에 간접적 관계 가능성 발견
+  → 엔티티 추출: 김정은(NKOfficial), 화성-20(WeaponSystem), 엔진 시험(FacilityActivity)
+  → 관계 추출: 김정은 --참여--> 엔진 시험, 엔진 시험 --관련--> 화성-20
+  → 기존 지식과 연결: 화성-20이 영변 핵시설에서 개발된다는 이전 정보와 연결
+  → 추론: 3/14 미사일 대규모 발사 → 3/28 엔진 시험 (무기 개발 에스컬레이션 체인)
+  → 추론: 영변 → 화성-20 → 엔진 시험 (시설-무기-시험 간접 연결)
 ```
 
 ---
@@ -87,36 +100,34 @@ Entity (엔티티)
 
 ```
 트리플 예시:
-  (SolarNext,  소속분야,  태양광)
-  (김민수,      CTO,      SolarNext)
-  (김민수,      전직,      EcoPanel)
-  (GreenTech,  투자,      SolarNext)
+  (김정은,       지휘,      원자력공업성)
+  (화성-20,     개발장소,   영변 핵시설)
+  (3/14 발사,   사용무기,   KN-25)
+  (ICBM 엔진 시험, 관련,   화성-20)
 ```
 
 이 트리플들이 모이면 그래프가 된다:
 
 ```mermaid
 graph LR
-    A["GreenTech Ventures"] -->|투자| B["SolarNext"]
-    C["김민수"] -->|CTO| B
-    C -->|전직| D["EcoPanel"]
-    B -->|분야| E["태양광"]
-    D -->|분야| E
-    A -.->|추론: 간접 연결| D
-
-    linkStyle 5 stroke-dasharray:5 5
+    A(["👤 김정은"]) -->|지휘| B(["🏛 원자력공업성"])
+    A -->|참여| C(["⚡ ICBM 엔진 시험"])
+    C -->|관련| D(["💡 화성-20"])
+    D -->|개발장소| E(["📍 영변 핵시설"])
+    F(["⚡ 3/14 발사"]) -->|사용무기| G(["💡 KN-25"])
+    F -.->|"추론: 후속"| C
 ```
 
 그래프는 시간이 지날수록 가치가 커진다:
 
 | 시점 | 노드 수 | 관계 수 | 무엇이 보이는가 |
 |------|---------|---------|----------------|
-| 1일차 | 5개 | 3개 | 개별 사실 |
-| 7일차 | 25개 | 40개 | 주요 행위자 간 관계 |
-| 30일차 | 80개 | 200개 | 네트워크 구조, 핵심 허브 |
-| 90일차 | 200개 | 600개 | 시간에 따른 패턴, 트렌드 변화 |
+| 1일차 | 20개 | 21개 | 주요 인물·시설·사건 개별 사실 |
+| 7일차 | 50개 | 80개 | 미사일 발사-제재 에스컬레이션 패턴 |
+| 30일차 | 120개 | 300개 | 핵 프로그램 네트워크, 자금 흐름, 핵심 인물 허브 |
+| 90일차 | 300개 | 800개 | 도발 주기, 기술 진보 트렌드, 확산 네트워크 |
 
-이것이 단발성 검색과 근본적으로 다른 점이다. **매일 조금씩 쌓인 정보가 어느 순간 사람이 머릿속으로 파악할 수 없는 복잡한 관계망을 보여준다.**
+이것이 단발성 검색과 근본적으로 다른 점이다. **매일 조금씩 쌓인 정보가 어느 순간 사람이 머릿속으로 파악할 수 없는 복잡한 핵 프로그램 관계망을 보여준다.**
 
 ---
 
@@ -140,44 +151,45 @@ flowchart TD
     H --> E
 ```
 
-### 구체적 예시: "기후기술 스타트업 생태계" 추적
+### 구체적 예시: "북한 핵활동 모니터링" 추적
 
 **1일차 — 시드 온톨로지 (초기 설정):**
 
 ```
-클래스: Person, Organization, Event, Location, Concept
-관계: affiliatedWith, participatesIn, locatedIn, relatedTo
+클래스: Person(NKOfficial, Diplomat), Organization(NKMilitaryOrg, InternationalOrg),
+       Event(NuclearTest, MissileLaunch, SanctionAction), Location(NuclearFacility, LaunchSite),
+       Concept(WeaponSystem, NuclearMaterial, Treaty, Technology)
+관계: affiliatedWith, commands, participatesIn, developsAt, usesWeaponSystem, violates, targets
 ```
 
 **3일차 — 첫 번째 가설:**
 
-여러 기사에서 "투자"라는 행위가 반복적으로 등장하지만, 기존 관계(`relatedTo`)로는 "투자"와 "협력"을 구분할 수 없다.
+여러 기사에서 "사이버 해킹"과 "IT 인력 사기"가 반복적으로 등장하지만, 기존 관계(`relatedTo`)로는 자금 조달 경로를 표현할 수 없다.
 
 ```
-가설: "investsIn" 관계 유형이 필요하다
-근거: 3건의 기사에서 투자 관계 패턴 확인
-  - src-012: "GreenTech, SolarNext에 투자"
-  - src-015: "BlueWave Capital, AquaClean에 투자"  
-  - src-018: "EcoFund, CarbonCapture에 투자"
-판정: 3건 이상 반복 → 스키마에 "investsIn" 관계 추가
+가설: "fundsThrough" 관계 유형이 필요하다
+근거: 3건의 기사에서 자금 조달 경로 패턴 확인
+  - src-013: "IT 사기 수익 → WMD 프로그램 자금"
+  - src-014: "사이버 해킹 $28억 → 핵/미사일 개발"
+  - src-015: "은행 세탁 → 무기 프로그램"
+판정: 3건 이상 반복 → 스키마에 "fundsThrough" 관계 추가
 ```
 
 **7일차 — 두 번째 가설:**
 
-Organization 클래스 하나로는 "스타트업"과 "투자사"와 "연구소"를 구분할 수 없다는 문제가 발견된다.
+Event 하위 클래스만으로는 "엔진 지상시험"과 "위성영상 분석 결과"를 구분할 수 없다는 문제가 발견된다.
 
 ```
-가설: Organization의 하위 클래스가 필요하다
-  - Startup (스타트업): 기술 개발, 투자 유치 대상
-  - Investor (투자사): 투자 실행 주체
-  - ResearchLab (연구소): 기술 연구, 논문 발표
-근거: 각 유형별 5건 이상 반복 확인
-판정: 스키마에 3개 하위 클래스 추가
+가설: Event의 하위 클래스를 세분화해야 한다
+  - WeaponTest (무기 시험): 엔진 시험, 발사 시험 등 능동적 시험
+  - IntelligenceReport (정보 보고): 위성영상 분석, 전문가 평가 등 관찰 기반
+근거: 각 유형별 4건 이상 반복 확인
+판정: 스키마에 2개 하위 클래스 추가
 ```
 
 **30일차 — 안정화:**
 
-초기 진화가 빠르게 일어나고, 시간이 지나면서 새로운 클래스/관계 추가가 줄어든다. 대신 기존 인스턴스의 정보가 풍부해진다.
+초기 진화가 빠르게 일어나고, 시간이 지나면서 새로운 클래스/관계 추가가 줄어든다. 대신 기존 인스턴스의 정보가 풍부해진다 — 영변 핵시설의 가동 사이클, 미사일 발사 패턴, 제재-도발 상관관계 등.
 
 ### 확장의 안전장치
 
@@ -200,28 +212,26 @@ Organization 클래스 하나로는 "스타트업"과 "투자사"와 "연구소"
 
 ### 추론 규칙 1: 전이성(Transitivity)
 
-> "A가 B에 속하고, B가 C에 속하면, A는 C에도 간접적으로 속한다"
+> "A가 B에 소속되고, B가 C에 소속되면, A는 C에도 간접적으로 소속된다"
 
 ```
 알려진 사실:
-  (김민수, CTO, SolarNext)
-  (SolarNext, 소속, K-Climate Alliance)
+  (김정은, 지휘, 원자력공업성)
+  (원자력공업성, 관할, 영변 핵시설)
 
 추론 결과:
-  (김민수, 간접소속, K-Climate Alliance)
+  (김정은, 간접관할, 영변 핵시설)
   신뢰도: 0.81 (= 0.9 × 0.9)
 ```
 
 ```mermaid
 graph LR
-    A["김민수"] -->|CTO| B["SolarNext"]
-    B -->|소속| C["K-Climate Alliance"]
-    A -.->|추론: 간접소속| C
-
-    linkStyle 2 stroke-dasharray:5 5
+    A(["👤 김정은"]) -->|지휘| B(["🏛 원자력공업성"])
+    B -->|관할| C(["📍 영변 핵시설"])
+    A -.->|"추론: 간접관할"| C
 ```
 
-왜 유용한가? 기자가 "김민수"를 취재하면서 K-Climate Alliance와의 연결을 모르고 있었다면, 이 추론이 새로운 취재 방향을 열어줄 수 있다.
+왜 유용한가? 개별 기사에는 "김정은이 영변을 직접 지시했다"는 내용이 없더라도, 지휘 체계를 통해 간접적 연결을 자동으로 발견할 수 있다.
 
 ### 추론 규칙 2: 사건 체인(Event Chain)
 
@@ -229,31 +239,29 @@ graph LR
 
 ```
 알려진 사실:
-  (EU 탄소국경세 시행, 원인, 아시아 탄소크레딧 수요 급증)
-  (아시아 탄소크레딧 수요 급증, 원인, 한국 탄소포집 스타트업 투자 활성화)
+  (3/14 대규모 미사일 발사, 후속, 3/28 ICBM 엔진 시험)
+  (3/28 ICBM 엔진 시험, 관련, 화성-20 ICBM 개발)
 
 추론 결과:
-  (EU 탄소국경세 시행, 인과체인, 한국 탄소포집 스타트업 투자 활성화)
+  (3/14 미사일 발사, 무기개발연쇄, 화성-20 ICBM 개발)
   신뢰도: 0.64 (= 0.8 × 0.8, 2단계 체인 감쇠)
 ```
 
-### 추론 규칙 3: 공동 참여(Co-participation)
+### 추론 규칙 3: 제재 에스컬레이션(Sanction Escalation)
 
-> "같은 사건에 참여한 엔티티는 잠재적 관계가 있다"
+> "미사일 발사/핵실험 후 제재 조치가 뒤따르면 에스컬레이션 패턴이다"
 
 ```
 알려진 사실:
-  (GreenTech Ventures, 참여, 2026 기후기술 서밋)
-  (SolarNext, 참여, 2026 기후기술 서밋)
-  (EcoFund, 참여, 2026 기후기술 서밋)
+  (3/14 발사, 유형, MissileLaunch)
+  (IT 사기 추가제재, 유형, SanctionAction)
+  (IT 사기 추가제재, 시기, 2026-03)
 
 추론 결과:
-  (GreenTech, 잠재적관계, SolarNext)   신뢰도: 0.5
-  (GreenTech, 잠재적관계, EcoFund)     신뢰도: 0.5
-  (SolarNext, 잠재적관계, EcoFund)     신뢰도: 0.5
+  (3/14 발사, 에스컬레이션유발, IT 사기 추가제재)   신뢰도: 0.75
 ```
 
-공동 참여 추론은 신뢰도가 낮다 — 같은 행사에 참석했다고 반드시 관계가 있는 것은 아니다. 하지만 다른 증거와 결합되면 신뢰도가 올라간다. 예를 들어 공동 참여 + 다른 기사에서 협업 언급이 있으면 "잠재적 관계"가 "협력 관계"로 승격된다.
+제재 에스컬레이션 추론은 시기적 상관관계에 기반하므로 신뢰도가 중간 수준이다. 하지만 이런 패턴이 반복되면(도발→제재→도발→제재) 신뢰도가 올라가며, 다음 도발 시기를 예측하는 단서가 된다.
 
 ### 신뢰도 계산
 
@@ -472,9 +480,9 @@ export CHELIPED_CLI=/tmp/cheliped-browser/scripts/cheliped-cli.mjs
 이 시스템의 핵심 설계 철학: **"코드를 수정하지 않고 설정만 바꾸면 새로운 주제에 적용할 수 있다."**
 
 ```
-원본 (onto-osint4nknc)
+원본 (onto-osint) — 범용 OSINT 시스템
     │
-    ├── Fork A: "기후기술 스타트업" ← config만 수정
+    ├── onto-osint4nknc: "북한 핵활동 모니터링" ← 이 리포지토리
     ├── Fork B: "반도체 공급망"     ← config만 수정
     ├── Fork C: "AI 안전성 연구"   ← config만 수정
     └── Fork D: "우주산업 동향"     ← config만 수정
@@ -489,42 +497,43 @@ export CHELIPED_CLI=/tmp/cheliped-browser/scripts/cheliped-cli.mjs
 ```jsonc
 {
   "project": {
-    "topic": "기후기술 스타트업 생태계",    // 추적할 주제
+    "topic": "North Korea Nuclear Activity Monitoring",    // 추적할 주제
     "goals": [
-      "주요 투자 동향 모니터링",
-      "핵심 행위자 관계 추적",
-      "정책 변화가 시장에 미치는 영향 감지"
+      "북한 핵/미사일 활동 동향 모니터링",
+      "핵심 인물 및 조직 관계 추적",
+      "국제 제재 및 비핵화 협상 진행 상황 추적"
     ],
     "scope": {
-      "include": ["기후기술", "탄소중립", "cleantech"],
-      "exclude": ["석유", "석탄", "화석연료 투자"]
+      "include": ["북한 핵실험", "ICBM", "영변 핵시설", "대북제재", "비핵화 협상"],
+      "exclude": ["북한 일반 내정", "탈북자 개인사", "한류 문화"]
     },
     "report_language": "ko",
     "lookback_days": 7                      // 이전 몇 일과 비교할 것인가
   },
   "search": {
     "keywords": {
-      "ko": ["기후기술 스타트업", "탄소중립 투자", "클린테크"],
-      "en": ["climate tech startup", "cleantech investment"]
+      "ko": ["북한 핵실험", "북한 미사일 발사", "영변 핵시설", "대북제재"],
+      "en": ["North Korea nuclear test", "DPRK missile launch", "Yongbyon nuclear facility"]
     }
   },
   "ontology": {
     "seed_classes": [
       // 도메인에 맞는 엔티티 유형 정의
-      { "id": "Startup", "label": "스타트업", "properties": ["name", "sector", "stage"] },
-      { "id": "Investor", "label": "투자사", "properties": ["name", "type", "portfolio"] }
+      { "id": "NKOfficial", "label": "북한 관료", "properties": ["name", "title", "sanctioned"] },
+      { "id": "NuclearFacility", "label": "핵시설", "properties": ["name", "facility_type", "status"] },
+      { "id": "WeaponSystem", "label": "무기체계", "properties": ["name", "type", "range"] }
     ],
     "seed_relations": [
       // 도메인에 맞는 관계 유형 정의
-      { "id": "investsIn", "label": "투자", "domain": "Investor", "range": "Startup" },
-      { "id": "developstech", "label": "기술개발", "domain": "Startup", "range": "Concept" }
+      { "id": "developsAt", "label": "개발장소", "domain": "WeaponSystem", "range": "NuclearFacility" },
+      { "id": "usesWeaponSystem", "label": "사용무기", "domain": "MissileLaunch", "range": "WeaponSystem" }
     ],
     "reasoning_rules": [
       // 도메인에 맞는 추론 규칙 정의
       {
-        "id": "portfolio_overlap",
-        "description": "같은 투자사의 포트폴리오 기업들은 잠재적 협력 관계",
-        "pattern": "(?investor investsIn ?a) AND (?investor investsIn ?b) => (?a potentialPartner ?b)"
+        "id": "sanction_escalation",
+        "description": "핵실험/미사일 발사 후 제재 조치가 뒤따르면 escalation 패턴",
+        "pattern": "(?test type NuclearTest|MissileLaunch) AND (?sanction follows ?test) => (?test triggeredEscalation ?sanction)"
       }
     ]
   }
