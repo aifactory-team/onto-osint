@@ -1,0 +1,22 @@
+{
+  "id": "src-001",
+  "title": "영변 핵단지 현대화…원자로 가동·농축시설 확장",
+  "url": "https://www.dailynk.com/20260407-3/",
+  "snippet": "위성영상 분석 결과 영변 핵단지에서 5MWe 원자로 가동, 경수로 시운전, 우라늄 농축시설 확장, 노후 대형 원자로 부지 철거가 동시 진행 중. 핵물질 생산 체계 유지와 장기 현대화를 병행하는 것으로 평가.",
+  "source_name": "DailyNK",
+  "language": "ko",
+  "discovered_date": "2026-04-07",
+  "tag": "new",
+  "related_report": null,
+  "related_item": null,
+  "tag_reason": "첫 실행, 이전 소스 없음",
+  "entities": [
+    { "id": "temp-002", "type": "NuclearFacility", "name": "영변 핵시설", "role": "핵물질 생산 핵단지" },
+    { "id": "temp-001", "type": "NKOfficial", "name": "김정은", "role": "국무위원장" },
+    { "id": "temp-018", "type": "NKNuclearEntity", "name": "원자력공업성", "role": "핵 프로그램 총괄" }
+  ],
+  "relations": [
+    { "subject": "temp-002", "predicate": "producesMaterial", "object": "플루토늄/농축우라늄" },
+    { "subject": "temp-001", "predicate": "commands", "object": "temp-018" }
+  ]
+}

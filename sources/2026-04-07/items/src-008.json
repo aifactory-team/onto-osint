@@ -1,0 +1,20 @@
+{
+  "id": "src-008",
+  "title": "North Korea Seeks Nuclear Recognition for U.S. Talks",
+  "url": "https://www.armscontrol.org/act/2026-04/news/north-korea-seeks-nuclear-recognition-us-talks",
+  "snippet": "북한이 미국과의 대화 재개 조건으로 핵보유국 인정을 요구. 비핵화가 아닌 핵군축 프레임으로 대화 방향 전환 시도.",
+  "source_name": "Arms Control Association",
+  "language": "en",
+  "discovered_date": "2026-04-07",
+  "tag": "new",
+  "related_report": null,
+  "related_item": null,
+  "tag_reason": "첫 실행, 이전 소스 없음",
+  "entities": [
+    { "id": "temp-019", "type": "DiplomaticEvent", "name": "핵보유국 인정 요구 대미 접촉", "role": "외교 이벤트" },
+    { "id": "temp-001", "type": "NKOfficial", "name": "김정은", "role": "최고지도자" }
+  ],
+  "relations": [
+    { "subject": "temp-019", "predicate": "relatedTo", "object": "temp-001" }
+  ]
+}

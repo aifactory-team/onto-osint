@@ -1,0 +1,25 @@
+{
+  "id": "src-002",
+  "title": "North Korea Tests Engine for Carbon-Fiber ICBM Designed for Multiple Warheads",
+  "url": "https://yournews.com/2026/04/06/6765109/north-korea-tests-engine-for-carbon-fiber-icbm-designed-for-multiple/",
+  "snippet": "북한이 3월 28일 김정은 참관 하에 탄소섬유 ICBM용 고체연료 엔진 지상시험을 실시. 최대 추력 2,500kN으로 전회(2024.9, 1,971kN) 대비 약 26% 증가. 화성-20 장착 예상, MIRV 탑재 가능성.",
+  "source_name": "yourNEWS",
+  "language": "en",
+  "discovered_date": "2026-04-07",
+  "tag": "new",
+  "related_report": null,
+  "related_item": null,
+  "tag_reason": "첫 실행, 이전 소스 없음",
+  "entities": [
+    { "id": "temp-001", "type": "NKOfficial", "name": "김정은", "role": "시험 참관" },
+    { "id": "temp-003", "type": "WeaponSystem", "name": "화성-20", "role": "신형 ICBM" },
+    { "id": "temp-016", "type": "Technology", "name": "탄소섬유 복합소재", "role": "ICBM 구조재" },
+    { "id": "temp-017", "type": "Technology", "name": "MIRV", "role": "다탄두 기술" },
+    { "id": "temp-010", "type": "FacilityActivity", "name": "ICBM 엔진 지상시험", "role": "사건" }
+  ],
+  "relations": [
+    { "subject": "temp-001", "predicate": "participatesIn", "object": "temp-010" },
+    { "subject": "temp-010", "predicate": "relatedTo", "object": "temp-003" },
+    { "subject": "temp-003", "predicate": "mentions", "object": "temp-017" }
+  ]
+}

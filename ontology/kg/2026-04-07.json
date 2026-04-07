@@ -1,0 +1,74 @@
+{
+  "date": "2026-04-07",
+  "new_triples": [
+    { "subject": "ent-001", "predicate": "commands", "object": "ent-018", "source_id": "src-001", "date": "2026-04-07", "confidence": 0.9, "type": "explicit" },
+    { "subject": "ent-001", "predicate": "participatesIn", "object": "ent-010", "source_id": "src-004", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-001", "predicate": "participatesIn", "object": "ent-009", "source_id": "src-009", "date": "2026-04-07", "confidence": 0.9, "type": "explicit" },
+    { "subject": "ent-003", "predicate": "developsAt", "object": "ent-002", "source_id": "src-001", "date": "2026-04-07", "confidence": 0.7, "type": "explicit" },
+    { "subject": "ent-010", "predicate": "relatedTo", "object": "ent-003", "source_id": "src-002", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-010", "predicate": "relatedTo", "object": "ent-016", "source_id": "src-002", "date": "2026-04-07", "confidence": 0.9, "type": "explicit" },
+    { "subject": "ent-010", "predicate": "relatedTo", "object": "ent-017", "source_id": "src-003", "date": "2026-04-07", "confidence": 0.85, "type": "explicit" },
+    { "subject": "ent-009", "predicate": "usesWeaponSystem", "object": "ent-005", "source_id": "src-009", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-002", "predicate": "monitorsBy", "object": "ent-011", "source_id": "src-018", "date": "2026-04-07", "confidence": 0.8, "type": "explicit" },
+    { "subject": "ent-014", "predicate": "targets", "object": "ent-018", "source_id": "src-013", "date": "2026-04-07", "confidence": 0.8, "type": "explicit" },
+    { "subject": "ent-015", "predicate": "targets", "object": "ent-018", "source_id": "src-015", "date": "2026-04-07", "confidence": 0.8, "type": "explicit" },
+    { "subject": "ent-007", "predicate": "violates", "object": "UNSCR", "source_id": "src-011", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-008", "predicate": "violates", "object": "UNSCR", "source_id": "src-012", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-009", "predicate": "violates", "object": "UNSCR", "source_id": "src-009", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-020", "predicate": "locatedIn", "object": "ent-006", "source_id": "src-007", "date": "2026-04-07", "confidence": 0.95, "type": "explicit" },
+    { "subject": "ent-019", "predicate": "relatedTo", "object": "ent-001", "source_id": "src-008", "date": "2026-04-07", "confidence": 0.8, "type": "explicit" }
+  ],
+  "updated_triples": [],
+  "inferred_triples": [
+    {
+      "subject": "ent-007",
+      "predicate": "follows",
+      "object": "ent-008",
+      "rule": "event_chain",
+      "confidence": 0.85,
+      "type": "inferred",
+      "reason": "2026-01-04 발사 → 2026-01-27 후속 발사 (시간순 이벤트 체인)"
+    },
+    {
+      "subject": "ent-008",
+      "predicate": "follows",
+      "object": "ent-009",
+      "rule": "event_chain",
+      "confidence": 0.85,
+      "type": "inferred",
+      "reason": "2026-01-27 발사 → 2026-03-14 대규모 발사 (도발 에스컬레이션)"
+    },
+    {
+      "subject": "ent-009",
+      "predicate": "follows",
+      "object": "ent-010",
+      "rule": "event_chain",
+      "confidence": 0.8,
+      "type": "inferred",
+      "reason": "2026-03-14 MRLS 시험 → 2026-03-28 ICBM 엔진 시험 (무기 개발 연쇄)"
+    },
+    {
+      "subject": "ent-014",
+      "predicate": "triggeredEscalation",
+      "object": "ent-009",
+      "rule": "sanction_escalation",
+      "confidence": 0.75,
+      "type": "inferred",
+      "reason": "3월 미사일 도발 → 3월 미국 추가 제재 (escalation 패턴)"
+    },
+    {
+      "subject": "ent-002",
+      "predicate": "linkedToLaunch",
+      "object": "ent-010",
+      "rule": "facility_weapon_link",
+      "confidence": 0.7,
+      "type": "inferred",
+      "reason": "화성-20이 영변에서 개발 + 엔진 시험과 연결 → 시설-시험 연결"
+    }
+  ],
+  "stats": {
+    "new_nodes": 20,
+    "new_edges": 16,
+    "inferred_edges": 5
+  }
+}

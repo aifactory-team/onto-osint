@@ -1,0 +1,20 @@
+{
+  "id": "src-007",
+  "title": "Villages Bordering Sohae Satellite Launching Station Razed",
+  "url": "https://www.38north.org/2026/04/villages-bordering-sohae-satellite-launching-station-razed/",
+  "snippet": "38 North 위성영상 분석: 서해위성발사장 인근 장야동·자강동 2개 마을이 2026년 4월 1일 기준 철거 완료. 위성·반위성 무기가 새 5개년 계획에 포함되어 우주발사장 확장 가능성.",
+  "source_name": "38 North",
+  "language": "en",
+  "discovered_date": "2026-04-07",
+  "tag": "new",
+  "related_report": null,
+  "related_item": null,
+  "tag_reason": "첫 실행, 이전 소스 없음",
+  "entities": [
+    { "id": "temp-006", "type": "LaunchSite", "name": "서해위성발사장", "role": "발사장" },
+    { "id": "temp-020", "type": "FacilityActivity", "name": "마을 철거", "role": "시설 확장" }
+  ],
+  "relations": [
+    { "subject": "temp-020", "predicate": "locatedIn", "object": "temp-006" }
+  ]
+}

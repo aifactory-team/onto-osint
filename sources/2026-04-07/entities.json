@@ -1,0 +1,220 @@
+{
+  "date": "2026-04-07",
+  "entities": [
+    {
+      "temp_id": "temp-001",
+      "matched_id": null,
+      "type": "NKOfficial",
+      "name": "김정은",
+      "name_en": "Kim Jong Un",
+      "properties": { "title": "국무위원장", "department": "조선노동당", "sanctioned": true },
+      "source_ids": ["src-002", "src-004", "src-005", "src-006", "src-007", "src-009"],
+      "mention_count": 12
+    },
+    {
+      "temp_id": "temp-002",
+      "matched_id": null,
+      "type": "NuclearFacility",
+      "name": "영변 핵시설",
+      "name_en": "Yongbyon Nuclear Scientific Research Center",
+      "properties": { "facility_type": "핵단지", "coordinates": "39.7956°N, 125.7553°E", "status": "가동 중", "capacity": "5MWe 원자로 + 경수로 + 우라늄 농축시설" },
+      "source_ids": ["src-001", "src-018"],
+      "mention_count": 8
+    },
+    {
+      "temp_id": "temp-003",
+      "matched_id": null,
+      "type": "WeaponSystem",
+      "name": "화성-20",
+      "name_en": "Hwasong-20",
+      "properties": { "type": "ICBM", "fuel_type": "고체연료", "range": "15000+km", "payload": "다탄두(MIRV) 가능" },
+      "source_ids": ["src-002", "src-003", "src-005", "src-006"],
+      "mention_count": 7
+    },
+    {
+      "temp_id": "temp-004",
+      "matched_id": null,
+      "type": "WeaponSystem",
+      "name": "화성-18",
+      "name_en": "Hwasong-18",
+      "properties": { "type": "ICBM", "fuel_type": "고체연료", "range": "13000+km" },
+      "source_ids": ["src-006"],
+      "mention_count": 3
+    },
+    {
+      "temp_id": "temp-005",
+      "matched_id": null,
+      "type": "WeaponSystem",
+      "name": "KN-25",
+      "name_en": "KN-25 MRLS",
+      "properties": { "type": "다연장로켓", "range": "380km" },
+      "source_ids": ["src-009", "src-010"],
+      "mention_count": 4
+    },
+    {
+      "temp_id": "temp-006",
+      "matched_id": null,
+      "type": "LaunchSite",
+      "name": "서해위성발사장",
+      "name_en": "Sohae Satellite Launching Station",
+      "properties": { "coordinates": "39.6604°N, 124.7054°E", "status": "확장 공사 중" },
+      "source_ids": ["src-007"],
+      "mention_count": 3
+    },
+    {
+      "temp_id": "temp-007",
+      "matched_id": null,
+      "type": "MissileLaunch",
+      "name": "2026-01-04 미사일 발사",
+      "properties": { "date": "2026-01-04", "missile_type": "극초음속 미사일", "range_km": 1000, "success": true },
+      "source_ids": ["src-011"],
+      "mention_count": 4
+    },
+    {
+      "temp_id": "temp-008",
+      "matched_id": null,
+      "type": "MissileLaunch",
+      "name": "2026-01-27 미사일 발사",
+      "properties": { "date": "2026-01-27", "missile_type": "단거리 탄도미사일", "range_km": 350, "success": true },
+      "source_ids": ["src-012"],
+      "mention_count": 2
+    },
+    {
+      "temp_id": "temp-009",
+      "matched_id": null,
+      "type": "MissileLaunch",
+      "name": "2026-03-14 대규모 미사일 발사",
+      "properties": { "date": "2026-03-14", "missile_type": "KN-25 다연장로켓", "launch_site": "미상", "range_km": 380, "success": true },
+      "source_ids": ["src-009", "src-010"],
+      "mention_count": 5
+    },
+    {
+      "temp_id": "temp-010",
+      "matched_id": null,
+      "type": "FacilityActivity",
+      "name": "2026-03-28 ICBM 엔진 지상시험",
+      "properties": { "date": "2026-03-28", "facility": "미상 시험장", "activity_type": "고체연료 엔진 지상시험", "source": "국정원 브리핑" },
+      "source_ids": ["src-002", "src-003", "src-004", "src-005"],
+      "mention_count": 8
+    },
+    {
+      "temp_id": "temp-011",
+      "matched_id": null,
+      "type": "InternationalOrg",
+      "name": "유엔 안전보장이사회",
+      "name_en": "UN Security Council",
+      "properties": { "mandate": "국제 평화 및 안보", "headquarters": "뉴욕" },
+      "source_ids": ["src-013", "src-014"],
+      "mention_count": 4
+    },
+    {
+      "temp_id": "temp-012",
+      "matched_id": null,
+      "type": "Organization",
+      "name": "미국 재무부",
+      "name_en": "US Department of the Treasury",
+      "properties": { "type": "정부기관", "country": "미국" },
+      "source_ids": ["src-013", "src-015"],
+      "mention_count": 3
+    },
+    {
+      "temp_id": "temp-013",
+      "matched_id": null,
+      "type": "ResearchInstitute",
+      "name": "38 North",
+      "properties": { "focus_area": "북한 분석", "country": "미국" },
+      "source_ids": ["src-005", "src-007", "src-016", "src-019"],
+      "mention_count": 6
+    },
+    {
+      "temp_id": "temp-014",
+      "matched_id": null,
+      "type": "SanctionAction",
+      "name": "2026-03 IT 사기 관련 대북 추가제재",
+      "properties": { "date": "2026-03", "issuing_body": "미국 국무부/재무부", "target": "북한 IT 인력 네트워크", "type": "개인·단체 제재 (2개 단체, 6명)" },
+      "source_ids": ["src-013"],
+      "mention_count": 2
+    },
+    {
+      "temp_id": "temp-015",
+      "matched_id": null,
+      "type": "SanctionAction",
+      "name": "사이버범죄 수익 세탁 관련 제재",
+      "properties": { "date": "2026-01", "issuing_body": "미국 재무부 OFAC", "target": "북한 은행원·기관", "type": "개인·단체 제재 (8명, 2개 단체)" },
+      "source_ids": ["src-015"],
+      "mention_count": 2
+    },
+    {
+      "temp_id": "temp-016",
+      "matched_id": null,
+      "type": "Technology",
+      "name": "탄소섬유 복합소재 ICBM 기술",
+      "name_en": "Carbon-fiber composite ICBM technology",
+      "properties": { "category": "미사일 구조재", "proliferation_risk": "high" },
+      "source_ids": ["src-002", "src-003"],
+      "mention_count": 4
+    },
+    {
+      "temp_id": "temp-017",
+      "matched_id": null,
+      "type": "Technology",
+      "name": "MIRV (다탄두 각개 재돌입 기술)",
+      "name_en": "Multiple Independently-targetable Reentry Vehicle",
+      "properties": { "category": "핵탄두 운반", "proliferation_risk": "critical" },
+      "source_ids": ["src-002", "src-003", "src-006"],
+      "mention_count": 5
+    },
+    {
+      "temp_id": "temp-018",
+      "matched_id": null,
+      "type": "NKNuclearEntity",
+      "name": "조선민주주의인민공화국 원자력공업성",
+      "name_en": "DPRK Ministry of Atomic Energy Industry",
+      "properties": { "function": "핵 프로그램 총괄", "location": "평양" },
+      "source_ids": ["src-001"],
+      "mention_count": 1
+    },
+    {
+      "temp_id": "temp-019",
+      "matched_id": null,
+      "type": "DiplomaticEvent",
+      "name": "북한 핵보유국 인정 요구 대미 접촉",
+      "properties": { "date": "2026-04", "location": "미상", "participants": ["북한", "미국"], "outcome": "진행 중" },
+      "source_ids": ["src-008"],
+      "mention_count": 2
+    },
+    {
+      "temp_id": "temp-020",
+      "matched_id": null,
+      "type": "FacilityActivity",
+      "name": "서해위성발사장 인근 마을 철거",
+      "properties": { "date": "2026-04-01", "facility": "서해위성발사장", "activity_type": "시설 확장을 위한 마을 철거", "source": "38 North 위성영상" },
+      "source_ids": ["src-007"],
+      "mention_count": 2
+    }
+  ],
+  "relations": [
+    { "subject": "temp-001", "predicate": "commands", "object": "temp-018", "source_ids": ["src-001"], "confidence": 0.9 },
+    { "subject": "temp-001", "predicate": "participatesIn", "object": "temp-010", "source_ids": ["src-004"], "confidence": 0.95 },
+    { "subject": "temp-003", "predicate": "developsAt", "object": "temp-002", "source_ids": ["src-001", "src-002"], "confidence": 0.7 },
+    { "subject": "temp-010", "predicate": "relatedTo", "object": "temp-003", "source_ids": ["src-002", "src-005"], "confidence": 0.95 },
+    { "subject": "temp-010", "predicate": "relatedTo", "object": "temp-016", "source_ids": ["src-002", "src-003"], "confidence": 0.9 },
+    { "subject": "temp-010", "predicate": "relatedTo", "object": "temp-017", "source_ids": ["src-002", "src-003", "src-006"], "confidence": 0.85 },
+    { "subject": "temp-009", "predicate": "usesWeaponSystem", "object": "temp-005", "source_ids": ["src-009"], "confidence": 0.95 },
+    { "subject": "temp-002", "predicate": "producesMaterial", "object": "temp-plutonium", "source_ids": ["src-001", "src-018"], "confidence": 0.9 },
+    { "subject": "temp-002", "predicate": "monitorsBy", "object": "temp-iaea", "source_ids": ["src-018"], "confidence": 0.8 },
+    { "subject": "temp-014", "predicate": "targets", "object": "temp-nk-it", "source_ids": ["src-013"], "confidence": 0.95 },
+    { "subject": "temp-015", "predicate": "targets", "object": "temp-nk-bankers", "source_ids": ["src-015"], "confidence": 0.95 },
+    { "subject": "temp-007", "predicate": "violates", "object": "temp-unscr", "source_ids": ["src-011"], "confidence": 0.95 },
+    { "subject": "temp-008", "predicate": "violates", "object": "temp-unscr", "source_ids": ["src-012"], "confidence": 0.95 },
+    { "subject": "temp-009", "predicate": "violates", "object": "temp-unscr", "source_ids": ["src-009", "src-010"], "confidence": 0.95 },
+    { "subject": "temp-020", "predicate": "locatedIn", "object": "temp-006", "source_ids": ["src-007"], "confidence": 0.95 },
+    { "subject": "temp-019", "predicate": "relatedTo", "object": "temp-001", "source_ids": ["src-008"], "confidence": 0.8 }
+  ],
+  "stats": {
+    "total_entities": 20,
+    "new_entities": 20,
+    "matched_entities": 0,
+    "total_relations": 16
+  }
+}

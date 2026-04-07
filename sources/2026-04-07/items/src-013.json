@@ -1,0 +1,20 @@
+{
+  "id": "src-013",
+  "title": "Sanctions to Disrupt DPRK IT Worker Schemes Defrauding U.S. Businesses",
+  "url": "https://www.state.gov/releases/office-of-the-spokesperson/2026/03/sanctions-to-disrupt-dprk-it-worker-schemes-defrauding-u-s-businesses/",
+  "snippet": "2026년 3월 미국 국무부, 북한 IT 인력 사기 네트워크에 대해 2개 단체·6명 개인 제재. 북한 IT 인력이 8개국에서 활동하며 WMD 프로그램 자금 조달.",
+  "source_name": "US State Dept",
+  "language": "en",
+  "discovered_date": "2026-04-07",
+  "tag": "new",
+  "related_report": null,
+  "related_item": null,
+  "tag_reason": "첫 실행, 이전 소스 없음",
+  "entities": [
+    { "id": "temp-014", "type": "SanctionAction", "name": "IT 사기 관련 추가제재", "role": "제재 조치" },
+    { "id": "temp-012", "type": "Organization", "name": "미국 국무부", "role": "제재 주체" }
+  ],
+  "relations": [
+    { "subject": "temp-014", "predicate": "targets", "object": "북한 IT 인력 네트워크" }
+  ]
+}

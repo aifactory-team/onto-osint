@@ -1,7 +1,219 @@
 {
   "version": "1.0.0",
   "description": "알려진 엔티티 인스턴스 — 파이프라인 실행 시 자동으로 추가/업데이트된다.",
-  "last_updated": null,
-  "entities": [],
-  "total_count": 0
+  "last_updated": "2026-04-07",
+  "entities": [
+    {
+      "id": "ent-001",
+      "type": "NKOfficial",
+      "name": "김정은",
+      "name_en": "Kim Jong Un",
+      "properties": { "title": "국무위원장", "department": "조선노동당", "sanctioned": true },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 12,
+      "source_ids": ["src-002", "src-004", "src-005", "src-006", "src-007", "src-009"]
+    },
+    {
+      "id": "ent-002",
+      "type": "NuclearFacility",
+      "name": "영변 핵시설",
+      "name_en": "Yongbyon Nuclear Scientific Research Center",
+      "properties": { "facility_type": "핵단지", "coordinates": "39.7956°N, 125.7553°E", "status": "가동 중", "capacity": "5MWe 원자로 + 경수로 + 우라늄 농축시설" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 8,
+      "source_ids": ["src-001", "src-018"]
+    },
+    {
+      "id": "ent-003",
+      "type": "WeaponSystem",
+      "name": "화성-20",
+      "name_en": "Hwasong-20",
+      "properties": { "type": "ICBM", "fuel_type": "고체연료", "range": "15000+km", "payload": "다탄두(MIRV) 가능" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 7,
+      "source_ids": ["src-002", "src-003", "src-005", "src-006"]
+    },
+    {
+      "id": "ent-004",
+      "type": "WeaponSystem",
+      "name": "화성-18",
+      "name_en": "Hwasong-18",
+      "properties": { "type": "ICBM", "fuel_type": "고체연료", "range": "13000+km" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 3,
+      "source_ids": ["src-006"]
+    },
+    {
+      "id": "ent-005",
+      "type": "WeaponSystem",
+      "name": "KN-25",
+      "name_en": "KN-25 MRLS",
+      "properties": { "type": "다연장로켓", "range": "380km" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 4,
+      "source_ids": ["src-009", "src-010"]
+    },
+    {
+      "id": "ent-006",
+      "type": "LaunchSite",
+      "name": "서해위성발사장",
+      "name_en": "Sohae Satellite Launching Station",
+      "properties": { "coordinates": "39.6604°N, 124.7054°E", "status": "확장 공사 중" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 3,
+      "source_ids": ["src-007"]
+    },
+    {
+      "id": "ent-007",
+      "type": "MissileLaunch",
+      "name": "2026-01-04 미사일 발사",
+      "properties": { "date": "2026-01-04", "missile_type": "극초음속 미사일", "range_km": 1000, "success": true },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 4,
+      "source_ids": ["src-011"]
+    },
+    {
+      "id": "ent-008",
+      "type": "MissileLaunch",
+      "name": "2026-01-27 미사일 발사",
+      "properties": { "date": "2026-01-27", "missile_type": "단거리 탄도미사일", "range_km": 350, "success": true },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 2,
+      "source_ids": ["src-012"]
+    },
+    {
+      "id": "ent-009",
+      "type": "MissileLaunch",
+      "name": "2026-03-14 대규모 미사일 발사",
+      "properties": { "date": "2026-03-14", "missile_type": "KN-25 다연장로켓", "range_km": 380, "success": true },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 5,
+      "source_ids": ["src-009", "src-010"]
+    },
+    {
+      "id": "ent-010",
+      "type": "FacilityActivity",
+      "name": "2026-03-28 ICBM 엔진 지상시험",
+      "properties": { "date": "2026-03-28", "facility": "미상 시험장", "activity_type": "고체연료 엔진 지상시험" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 8,
+      "source_ids": ["src-002", "src-003", "src-004", "src-005"]
+    },
+    {
+      "id": "ent-011",
+      "type": "InternationalOrg",
+      "name": "유엔 안전보장이사회",
+      "name_en": "UN Security Council",
+      "properties": { "mandate": "국제 평화 및 안보", "headquarters": "뉴욕" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 4,
+      "source_ids": ["src-013", "src-014"]
+    },
+    {
+      "id": "ent-012",
+      "type": "Organization",
+      "name": "미국 재무부",
+      "name_en": "US Department of the Treasury",
+      "properties": { "type": "정부기관", "country": "미국" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 3,
+      "source_ids": ["src-013", "src-015"]
+    },
+    {
+      "id": "ent-013",
+      "type": "ResearchInstitute",
+      "name": "38 North",
+      "properties": { "focus_area": "북한 분석", "country": "미국" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 6,
+      "source_ids": ["src-005", "src-007", "src-016", "src-019"]
+    },
+    {
+      "id": "ent-014",
+      "type": "SanctionAction",
+      "name": "2026-03 IT 사기 관련 대북 추가제재",
+      "properties": { "date": "2026-03", "issuing_body": "미국 국무부/재무부", "target": "북한 IT 인력 네트워크", "type": "개인·단체 제재 (2개 단체, 6명)" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 2,
+      "source_ids": ["src-013"]
+    },
+    {
+      "id": "ent-015",
+      "type": "SanctionAction",
+      "name": "사이버범죄 수익 세탁 관련 제재",
+      "properties": { "date": "2026-01", "issuing_body": "미국 재무부 OFAC", "target": "북한 은행원·기관", "type": "개인·단체 제재 (8명, 2개 단체)" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 2,
+      "source_ids": ["src-015"]
+    },
+    {
+      "id": "ent-016",
+      "type": "Technology",
+      "name": "탄소섬유 복합소재 ICBM 기술",
+      "name_en": "Carbon-fiber composite ICBM technology",
+      "properties": { "category": "미사일 구조재", "proliferation_risk": "high" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 4,
+      "source_ids": ["src-002", "src-003"]
+    },
+    {
+      "id": "ent-017",
+      "type": "Technology",
+      "name": "MIRV",
+      "name_en": "Multiple Independently-targetable Reentry Vehicle",
+      "properties": { "category": "핵탄두 운반", "proliferation_risk": "critical" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 5,
+      "source_ids": ["src-002", "src-003", "src-006"]
+    },
+    {
+      "id": "ent-018",
+      "type": "NKNuclearEntity",
+      "name": "원자력공업성",
+      "name_en": "DPRK Ministry of Atomic Energy Industry",
+      "properties": { "function": "핵 프로그램 총괄", "location": "평양" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 1,
+      "source_ids": ["src-001"]
+    },
+    {
+      "id": "ent-019",
+      "type": "DiplomaticEvent",
+      "name": "북한 핵보유국 인정 요구 대미 접촉",
+      "properties": { "date": "2026-04", "participants": ["북한", "미국"], "outcome": "진행 중" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 2,
+      "source_ids": ["src-008"]
+    },
+    {
+      "id": "ent-020",
+      "type": "FacilityActivity",
+      "name": "서해위성발사장 인근 마을 철거",
+      "properties": { "date": "2026-04-01", "facility": "서해위성발사장", "activity_type": "시설 확장을 위한 마을 철거" },
+      "first_seen": "2026-04-07",
+      "last_seen": "2026-04-07",
+      "mention_count": 2,
+      "source_ids": ["src-007"]
+    }
+  ],
+  "total_count": 20
 }

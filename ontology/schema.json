@@ -1,8 +1,95 @@
 {
   "version": "1.0.0",
   "description": "OSINT 온톨로지 스키마 — config/osint-config.json의 seed로부터 초기화되고, 매일 파이프라인 실행 시 자동 확장된다.",
-  "last_updated": null,
-  "classes": [],
-  "relations": [],
-  "changelog": []
+  "last_updated": "2026-04-07",
+  "classes": [
+    {
+      "id": "Entity",
+      "label": "엔티티",
+      "description": "최상위 클래스",
+      "subclasses": [
+        {
+          "id": "Person",
+          "label": "인물",
+          "properties": ["name", "role", "affiliation", "rank"],
+          "subclasses": [
+            { "id": "NKOfficial", "label": "북한 관료", "properties": ["name", "title", "department", "sanctioned"] },
+            { "id": "NuclearScientist", "label": "핵 과학자", "properties": ["name", "specialty", "affiliation"] },
+            { "id": "Diplomat", "label": "외교관", "properties": ["name", "country", "role"] },
+            { "id": "Analyst", "label": "분석가", "properties": ["name", "institution", "specialty"] }
+          ]
+        },
+        {
+          "id": "Organization",
+          "label": "조직",
+          "properties": ["name", "type", "location", "country"],
+          "subclasses": [
+            { "id": "NKMilitaryOrg", "label": "북한 군사조직", "properties": ["name", "command_structure", "mission"] },
+            { "id": "NKNuclearEntity", "label": "북한 핵기관", "properties": ["name", "function", "location"] },
+            { "id": "InternationalOrg", "label": "국제기구", "properties": ["name", "mandate", "headquarters"] },
+            { "id": "ResearchInstitute", "label": "연구기관", "properties": ["name", "focus_area", "country"] }
+          ]
+        },
+        {
+          "id": "Event",
+          "label": "사건",
+          "properties": ["name", "date", "location", "participants"],
+          "subclasses": [
+            { "id": "NuclearTest", "label": "핵실험", "properties": ["name", "date", "yield_kt", "location", "seismic_magnitude"] },
+            { "id": "MissileLaunch", "label": "미사일 발사", "properties": ["name", "date", "missile_type", "launch_site", "range_km", "apogee_km", "success"] },
+            { "id": "DiplomaticEvent", "label": "외교 행사", "properties": ["name", "date", "location", "participants", "outcome"] },
+            { "id": "SanctionAction", "label": "제재 조치", "properties": ["name", "date", "issuing_body", "target", "type"] },
+            { "id": "FacilityActivity", "label": "시설 활동", "properties": ["name", "date", "facility", "activity_type", "source"] }
+          ]
+        },
+        {
+          "id": "Location",
+          "label": "장소",
+          "properties": ["name", "type", "coordinates", "country"],
+          "subclasses": [
+            { "id": "NuclearFacility", "label": "핵시설", "properties": ["name", "facility_type", "coordinates", "status", "capacity"] },
+            { "id": "LaunchSite", "label": "발사장", "properties": ["name", "coordinates", "missile_types", "status"] },
+            { "id": "TestSite", "label": "실험장", "properties": ["name", "coordinates", "test_count", "status"] }
+          ]
+        },
+        {
+          "id": "Concept",
+          "label": "개념",
+          "properties": ["name", "domain"],
+          "subclasses": [
+            { "id": "WeaponSystem", "label": "무기체계", "properties": ["name", "type", "range", "payload", "fuel_type"] },
+            { "id": "NuclearMaterial", "label": "핵물질", "properties": ["name", "type", "grade", "usage"] },
+            { "id": "Treaty", "label": "조약/협정", "properties": ["name", "parties", "status", "date"] },
+            { "id": "SanctionRegime", "label": "제재 레짐", "properties": ["name", "resolution_number", "scope", "date"] },
+            { "id": "Technology", "label": "기술", "properties": ["name", "category", "proliferation_risk"] }
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    { "id": "participatesIn", "label": "참여", "domain": "Person", "range": "Event" },
+    { "id": "affiliatedWith", "label": "소속", "domain": "Person", "range": "Organization" },
+    { "id": "locatedIn", "label": "위치", "domain": "Entity", "range": "Location" },
+    { "id": "relatedTo", "label": "관련", "domain": "Entity", "range": "Entity" },
+    { "id": "causedBy", "label": "원인", "domain": "Event", "range": "Event" },
+    { "id": "follows", "label": "후속", "domain": "Event", "range": "Event" },
+    { "id": "mentions", "label": "언급", "domain": "Entity", "range": "Concept" },
+    { "id": "opposes", "label": "대립", "domain": "Entity", "range": "Entity" },
+    { "id": "cooperatesWith", "label": "협력", "domain": "Entity", "range": "Entity" },
+    { "id": "commands", "label": "지휘", "domain": "Person", "range": "Organization" },
+    { "id": "developsAt", "label": "개발장소", "domain": "WeaponSystem", "range": "NuclearFacility" },
+    { "id": "testedAt", "label": "실험장소", "domain": "NuclearTest", "range": "TestSite" },
+    { "id": "launchedFrom", "label": "발사장소", "domain": "MissileLaunch", "range": "LaunchSite" },
+    { "id": "sanctionedBy", "label": "제재주체", "domain": "Entity", "range": "SanctionAction" },
+    { "id": "targets", "label": "제재대상", "domain": "SanctionAction", "range": "Entity" },
+    { "id": "violates", "label": "위반", "domain": "Event", "range": "Treaty" },
+    { "id": "usesWeaponSystem", "label": "사용무기", "domain": "MissileLaunch", "range": "WeaponSystem" },
+    { "id": "producesMaterial", "label": "생산물질", "domain": "NuclearFacility", "range": "NuclearMaterial" },
+    { "id": "suppliesTo", "label": "공급", "domain": "Entity", "range": "Entity" },
+    { "id": "monitorsBy", "label": "감시주체", "domain": "NuclearFacility", "range": "InternationalOrg" }
+  ],
+  "changelog": [
+    { "date": "2026-04-07", "action": "init", "description": "config seed_classes + seed_relations로 초기화" }
+  ]
 }
