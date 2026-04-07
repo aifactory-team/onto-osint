@@ -437,7 +437,7 @@ Actions → "Run workflow" → `target_date`에 `2026-04-07` 입력
 
 ```bash
 # 프로젝트 디렉토리로 이동
-cd onto-osint
+cd onto-osint4nknc
 
 # Claude Code CLI로 실행
 claude "오늘 날짜로 OSINT 보고서를 생성해줘"
@@ -472,7 +472,7 @@ export CHELIPED_CLI=/tmp/cheliped-browser/scripts/cheliped-cli.mjs
 이 시스템의 핵심 설계 철학: **"코드를 수정하지 않고 설정만 바꾸면 새로운 주제에 적용할 수 있다."**
 
 ```
-원본 (onto-osint)
+원본 (onto-osint4nknc)
     │
     ├── Fork A: "기후기술 스타트업" ← config만 수정
     ├── Fork B: "반도체 공급망"     ← config만 수정
@@ -550,7 +550,7 @@ export CHELIPED_CLI=/tmp/cheliped-browser/scripts/cheliped-cli.mjs
 ## 10. 디렉토리 구조
 
 ```
-onto-osint/
+onto-osint4nknc/
 ├── config/
 │   └── osint-config.json          # 유일한 설정 파일 (fork 후 이것만 수정)
 ├── ontology/

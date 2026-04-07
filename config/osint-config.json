@@ -1,6 +1,6 @@
 {
   "project": {
-    "name": "nknc-onto-osint",
+    "name": "onto-osint4nknc",
     "topic": "North Korea Nuclear Activity Monitoring",
     "description": "북한의 핵무기 개발, 핵실험, 미사일 발사, 핵시설 활동, 국제 제재 및 비핵화 협상 등 핵 관련 동향을 추적하는 OSINT 시스템",
     "goals": [
